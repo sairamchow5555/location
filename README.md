@@ -1,79 +1,34 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# GPS Location using ReactNative
 
-# Getting Started
+![1](https://github.com/sairamchow5555/location/assets/126855559/074352ad-6d81-4278-8cf9-87460a032063)
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+![2](https://github.com/sairamchow5555/location/assets/126855559/ae7e370f-91b3-4ff1-897d-39b1b958dd0c)
 
-## Step 1: Start the Metro Server
-
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
-
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+# Step1: Android
+To request access to location, you need to add the following line to your app's AndroidManifest.xml:
 ```
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-## Step 2: Start your Application
+or
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
+# Step2: Replace "YOUR_API_KEY_HERE" with your actual Google Maps API key.
+   a. Go to the Google Cloud Console: Visit the Google Cloud Console at https://console.cloud.google.com/.
 
-### For iOS
+   b. Create a New Project (if necessary): If you haven't created a project yet, click on the project dropdown menu at the top of the page and select "New Project". Follow the prompts to create a new project and give it a name.
 
-```bash
-# using npm
-npm run ios
+   c. Enable the Maps JavaScript API: Once your project is created (or if you already have a project), click on the "Enable APIs and Services" button.
 
-# OR using Yarn
-yarn ios
-```
+   d. Find and Enable the Maps JavaScript API: In the search bar, type "Maps JavaScript API" and click on it in the results. Then, click the "Enable" button to enable the API for your project.
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+   e. Create Credentials: After enabling the API, go to the "Credentials" section on the left sidebar.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+   f. Create an API Key: Click on the "Create credentials" dropdown and select "API key". This will generate a new API key for you.
 
-## Step 3: Modifying your App
+   g. Restrict the API Key (Optional): For security reasons, it's recommended to restrict your API key. You can restrict it by HTTP referrer, IP address, or mobile app. This helps prevent unauthorized use of your key.
 
-Now that you have successfully run the app, let's modify it.
+   h. Copy Your API Key: Once you've created your API key, copy it and paste it into your application code where it says "YOUR_API_KEY_HERE".
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Remember to keep your API key secure and never share it publicly, as it can be used to access your Google Cloud resources and you may incur charges if it's misused.
