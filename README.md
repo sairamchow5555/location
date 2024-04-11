@@ -14,6 +14,7 @@ or
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
 
+Inside the application element, add the following meta-data element
 ```
 <application
    ...>
