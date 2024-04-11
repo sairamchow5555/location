@@ -13,6 +13,17 @@ or
 
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
+
+```
+<application
+   ...>
+   <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="YOUR_API_KEY_HERE"
+   />
+</application>
+```
+
 # Step2: Replace "YOUR_API_KEY_HERE" with your actual Google Maps API key.
    a. Go to the Google Cloud Console: Visit the Google Cloud Console at https://console.cloud.google.com/.
 
