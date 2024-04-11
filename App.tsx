@@ -1,117 +1,124 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Platform, PermissionsAndroid, Alert, View, Text } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const App = () => {
+  const [position, setPosition] = useState({
+    latitude: 20.5937, // Latitude of India
+    longitude: 78.9629, // Longitude of India
+    latitudeDelta: 12, // Zoom level
+    longitudeDelta: 12,
+  });
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        // Request location permission
+        await requestLocationPermission();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+        // Get current position
+        const pos: Position= await new Promise((resolve, reject) => {
+          Geolocation.getCurrentPosition(resolve, reject);
+        });
+        const crd = pos.coords;
+        setPosition({
+          latitude: crd.latitude,
+          longitude: crd.longitude,
+          latitudeDelta: 0.0421,
+          longitudeDelta: 0.0421,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
+    fetchLocation();
+  }, []);
+
+  // Function to request location permission
+  const requestLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+            title: 'Location Permission',
+            message: 'This app needs access to your location.',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Location permission granted');
+        } else {
+          console.log('Location permission denied');
+        }
+      } else if (Platform.OS === 'ios') {
+        // For iOS, permissions are handled differently
+        // You can use the Permissions API for iOS
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <MapView
+        style={styles.map}
+        initialRegion={position}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        followsUserLocation={true}
+        showsCompass={true}
+        scrollEnabled={true}
+        zoomEnabled={true}
+        pitchEnabled={true}
+        rotateEnabled={true}>
+        <Marker
+          title='You are here'
+          description='This is your current location'
+          coordinate={position}
+        />
+      </MapView>
+      <View style={styles.locationDetailsContainer}>
+        <Text style={styles.locationText}>
+          Latitude: {position.latitude}
+        </Text>
+        <Text style={styles.locationText}>
+          Longitude: {position.longitude}
+        </Text>
+        {/* Add more location details as needed */}
+      </View>
+    </View>
+    
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    width: 360,
+    height: 700,
+    marginVertical: 20,
+    marginHorizontal: 20,
+    borderRadius: 15,
+    overflow: 'hidden', // Added overflow to ensure borderRadius is applied
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  locationDetailsContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Semi-transparent white background
+    padding: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  highlight: {
-    fontWeight: '700',
+  locationText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
 });
 
